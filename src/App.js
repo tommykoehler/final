@@ -3,9 +3,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { apiKey } from './constants';
-
-
 
 class App extends Component {
 
@@ -18,11 +15,14 @@ class App extends Component {
 
   // runs once app component is completly loaded
   componentDidMount() {
+    // const {apiKey} = process.env && import('./constants');
     console.log('component loaded');
-    // console.log(apiKey);
+
+    // process.env(apiKey);
+    console.log(process.env.REACT_APP_apiKey)
 
     // this is the Heroku version and the second apiKey is the local apiKey
-    console.log(process.env.apiKey || apiKey)
+    // console.log(process.env.apiKey || apiKey)
     this.getApi();
   }
 
