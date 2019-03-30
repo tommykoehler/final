@@ -1,70 +1,68 @@
-//move the API to a button or subpage. Do not run on App load
+import React, { Component } from 'react'
+//import axios from 'axios'
 
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+//const { API_KEY } = '2e6f996d79af39c55edc35ee6bf47d35'
+const API_URL = 'https://accesscontrolalloworiginall.herokuapp.com/https://sandbox-api.brewerydb.com/v2/beers/?key=2e6f996d79af39c55edc35ee6bf47d35'
 
-class App extends Component {
-
+class Search extends Component {
   state = {
-
+    query: '',
+    results: []
   }
 
-  // sets "textUrl" as the string variable
-  textUrl = 'https://accesscontrolalloworiginall.herokuapp.com/http://api.yelp.com/v3/businesses/search'
-
-  // runs once app component is completly loaded
-  componentDidMount() {
-    // const {apiKey} = process.env && import('./constants');
-    console.log('component loaded');
-
-    // process.env(apiKey);
-    console.log(process.env.REACT_APP_apiKey)
-
-    // this is the Heroku version and the second apiKey is the local apiKey
-    // console.log(process.env.apiKey || apiKey)
-    this.getApi();
+  runApi = () => {
+    console.log(API_URL);
   }
 
-  // do not use a ";" after fetch b/c it will close the fetch function
-  getApi = () => {
-      fetch(this.textUrl)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        //setState is a default func that comes w/ every Component
-        this.setState({
-          apiResult: json.data,
+  // getInfo = () => {
+  //   axios.get(`${API_URL}${this.state.query}`)
+  //     .then(({ data }) => {
+  //       this.setState({
+  //         results: data.data // MusicGraph returns an object named data,
+  //                            // as does axios. So... data.data
+  //       })
+  //     })
+  // }
 
-        })
-      });
+  findApi = () => {
+        // fetch(API_URL)
+        // .then(function(response) {
+        //   return response.json();
+        // })
+        // .then(function(myJson) {
+        //   console.log(JSON.stringify(myJson));
+        // });
+        console.log('hi')
   }
 
+  // handleInputChange = () => {
+  //   this.setState({
+  //     query: this.search.value
+  //   }, () => {
+  //     if (this.state.query && this.state.query.length > 1) {
+  //       if (this.state.query.length % 2 === 0) {
+  //         this.getInfo()
+  //         console.log('Type works');
+  //       }
+  //     }
+  //   })
+  // }
 
+// findApi()
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          { /* THIS IS A REACT COMMENT:
-            takes the data from apiResult, turns it into a string, and prints it to the p tag*/}
-          <p>{JSON.stringify(this.state.apiResult)}</p>
-        </header>
-      </div>
-    );
+      <form>
+        <input
+          placeholder="Search"
+          ref={input => this.search = input}
+          onChange={this.handleInputChange}
+        />
+        <p>{this.state.query}</p>
+      </form>
+
+    )
   }
 }
 
-export default App;
+export default Search
