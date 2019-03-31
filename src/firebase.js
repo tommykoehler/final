@@ -1,6 +1,4 @@
-<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
+import firebase from 'firebase'
   var config = {
     apiKey: "AIzaSyB39RqvxfjPFsuQOHkAz_b9S7mdr-fXhuY",
     authDomain: "final-project-10a82.firebaseapp.com",
@@ -10,4 +8,4 @@
     messagingSenderId: "27792987981"
   };
   firebase.initializeApp(config);
-</script>
+export default firebase;

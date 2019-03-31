@@ -1,7 +1,7 @@
 // You need to call this for every page in order to import React
 import React, { Component } from 'react';
 
-export default class Search extends React.Component {
+export default class Search extends Component {
   constructor (props) {
       super(props);
       this.items = [];
@@ -11,7 +11,14 @@ export default class Search extends React.Component {
     render () {
       return (
         <div>
-          <input onChange={this.onTextChange} type="text" id="search"/>
+          <input
+            placeholder="Search"
+            ref={input => this.search = input}
+            onChange={this.handleInputChange}
+            type="text"
+            id="search"
+          />
+          <h1>Test h1</h1>
         </div>
       )
     }
