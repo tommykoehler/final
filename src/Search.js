@@ -18,7 +18,7 @@ export default class Search extends Component {
             type="text"
             id="search"
           />
-          <h1>Test h1</h1>
+          <h1><span>beer</span>list.</h1>
         </div>
       )
     }

@@ -100,39 +100,43 @@ class Search extends Component {
     // </ul>
   render() {
     return (
-      <div className="body-div">
-
-        <ActualSearch/>
-
-        <Button
-        clickHandler={this.printBeer}
-        buttonText='get brews'
-        />
-        <form onSubmit={this.handleSubmit}>
-          <input
-          type="text"
-          name="currentItem"
-          placeholder="What are you bringing?"
-          onChange={this.handleChange}
-          value={this.state.currentItem}>
-          </input>
-          <button>Add Beer</button>
-        </form>
-
-        <section className='display-item'>
-          <div className="wrapper">
-            <ul>
-              {this.state.items.map((item) => {
-                return (
-                  <li key={item.id}>
-                    <h3>{item.title}</h3>
-                    <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </section>
+      <div className="full-app">
+        <div className="body-div">
+        <section className="search">
+            <Button
+            clickHandler={this.printBeer}
+            buttonText='get brews'
+            />
+            <ActualSearch/>
+            <form onSubmit={this.handleSubmit}>
+              <input
+              type="text"
+              name="currentItem"
+              placeholder="What are you bringing?"
+              onChange={this.handleChange}
+              value={this.state.currentItem}>
+              </input>
+              <button>Add Beer</button>
+            </form>
+          </section>
+          <section className="lister">
+            <div className="wrapper">
+              <ul>
+                {this.state.items.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      <h3>{item.title}</h3>
+                      <button
+                      onClick={() => this.removeItem(item.id)}
+                      className="remove-btn"
+                      >Remove</button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </section>
+        </div>
       </div>
     )
   }
