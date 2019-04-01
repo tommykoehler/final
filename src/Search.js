@@ -11,14 +11,7 @@ export default class Search extends Component {
     render () {
       return (
         <div>
-          <input
-            placeholder="Search"
-            ref={input => this.search = input}
-            onChange={this.handleInputChange}
-            type="text"
-            id="search"
-          />
-          <h1><span>beer</span>list.</h1>
+          <h1><span>beer</span>list<span className="bolder">.</span></h1>
         </div>
       )
     }

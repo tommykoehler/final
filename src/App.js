@@ -5,6 +5,7 @@ import Button from './Button.js';
 import ActualSearch from './Search.js';
 import './App.css'
 import Firebase from'./firebase.js'
+import beer from './beer.svg';
 
 const apiUrl = `https://accesscontrolalloworiginall.herokuapp.com/https://sandbox-api.brewerydb.com/v2/beers/?key=2e6f996d79af39c55edc35ee6bf47d35`
 
@@ -68,7 +69,8 @@ class Search extends Component {
       super();
       this.state = {
         currentItem: '',
-        items: []
+        items: [],
+        results: []
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -92,35 +94,39 @@ class Search extends Component {
       });
     }
 
-    // <ul>{this.state.results.map((data) => {
-    //     return (
-    //       <li>{data.name}</li>
-    //     )
-    //   })}
-    // </ul>
   render() {
     return (
       <div className="full-app">
         <div className="body-div">
         <section className="search">
-            <Button
-            clickHandler={this.printBeer}
-            buttonText='get brews'
-            />
+          <img src={beer} className="App-logo" alt="logo" />
             <ActualSearch/>
             <form onSubmit={this.handleSubmit}>
               <input
               type="text"
               name="currentItem"
-              placeholder="What are you bringing?"
+              placeholder="Search"
               onChange={this.handleChange}
               value={this.state.currentItem}>
               </input>
-              <button>Add Beer</button>
+              <Button
+              clickHandler={this.printBeer}
+              buttonText='Search Brews'
+              />
+            </form>
+
+            <form onSubmit={this.handleSubmit}>
+              <input
+              type="text"
+              name="currentItem"
+              placeholder="Add a custom beer"
+              onChange={this.handleChange}
+              value={this.state.currentItem}>
+              </input>
+              <button>Add</button>
             </form>
           </section>
           <section className="lister">
-            <div className="wrapper">
               <ul>
                 {this.state.items.map((item) => {
                   return (
@@ -134,7 +140,6 @@ class Search extends Component {
                   )
                 })}
               </ul>
-            </div>
           </section>
         </div>
       </div>
