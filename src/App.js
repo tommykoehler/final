@@ -4,7 +4,6 @@ import './App.css'
 import Button from './Button.js';
 import ActualSearch from './Search.js';
 import Firebase from'./firebase.js'
-import beer from './beer.svg';
 
 const apiUrl = `https://accesscontrolalloworiginall.herokuapp.com/https://sandbox-api.brewerydb.com/v2/beers/?key=2e6f996d79af39c55edc35ee6bf47d35`
 
@@ -43,16 +42,36 @@ class Search extends Component {
       });
     }
 
+    beerChange(a) {
+      this.setState({
+        [a.target.name]: a.target.value
+      });
+    }
+
     handleSubmit(e) {
       e.preventDefault();
       const itemsRef = Firebase.database().ref('items');
       const item = {
-        title: this.state.currentItem
+        title: this.state.customItem
       }
       itemsRef.push(item);
       this.setState({
-        currentItem: '',
+        customItem: '',
       });
+    }
+
+    beerSubmit(a) {
+      a.preventDefault();
+      const itemsRef = Firebase.database().ref('items');
+      const searchedBeerName = (this.state.beers[0].name)
+      const item = {
+        title: this.state.searchItem
+      }
+      itemsRef.push(item);
+      this.setState({
+        searchItem: searchedBeerName
+      });
+      console.log(this.state.beers[0].name)
     }
 
     removeItem(itemId) {
@@ -63,7 +82,7 @@ class Search extends Component {
     constructor() {
       super();
       this.state = {
-        currentItem: '',
+        customItem: '',
         items: [],
         results: [],
         beers: [],
@@ -72,6 +91,7 @@ class Search extends Component {
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.beerSubmit = this.beerSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -91,21 +111,11 @@ class Search extends Component {
       });
     }
 
-    addToList(a) {
-      a.preventDefault();
-      const searchBeer = document.getElementById('searchBeer');
-      console.log(searchBeer);
-      const addBox = document.getElementById("addBox").setAttribute("value", searchBeer);
-      console.log(addBox);
-    }
-
   render() {
     return (
       <div className="full-app">
         <div className="body-div">
         <section className="search">
-
-          <img src={beer} className="App-logo" alt="logo" />
 
             <ActualSearch/>
 
@@ -113,50 +123,43 @@ class Search extends Component {
               <input
               type="text"
               name="searchItem"
-              placeholder="Search"
+              placeholder="Search for a beer"
               onChange={this.handleChange}
-              value={this.state.searchItem}>
+              value={this.searchedBeerName}>
               </input>
-              <Button
-              buttonText='Search Brews'
-              />
+              <button>Search</button>
             </form>
 
-            <form>
-              <div className='doc-results'>
-                <ul className='action-results'>
-                  <li>
-                      <h3
-                      name="currentItem"
-                      value={this.state.currentItem}
-                      id="searchBeer"
-                      >
-                      {JSON.stringify(this.state.beers.length>0 && this.state.beers[0].name)}
-                      </h3>
-                      <button
-                      className="remove-btn"
-                      onClick={this.addToList}
-                      >Add</button>
-                  </li>
-                </ul>
+
+            <form
+            className="beer-waiting"
+            onSubmit={this.beerSubmit}
+            >
+              <div className="beerDiv">
+                <h3
+                name="searchItem"
+                onChange={this.beerChange}
+                value="searchItem"
+                className="stronger"
+                >{JSON.stringify(this.state.beers.length>0 && this.state.beers[0].name)}</h3>
+                <button
+                className="button-push"
+                >Add Searched Beer</button>
               </div>
             </form>
 
+
             <form onSubmit={this.handleSubmit}>
               <input
-              type="text"
-              id = "addBox"
-              name="currentItem"
-              placeholder="Add a custom beer"
+              name="customItem"
               onChange={this.handleChange}
-              value={this.state.currentItem}>
+              value={this.state.customItem}
+              placeholder="Add a custom beer"
+              >
               </input>
-              <button>Add</button>
+              <button>Add Custom Beer</button>
             </form>
-          </section>
 
-
-          <section>
               <ul>
                 {this.state.items.map((item) => {
                   return (
@@ -170,6 +173,7 @@ class Search extends Component {
                   )
                 })}
               </ul>
+
           </section>
         </div>
       </div>
