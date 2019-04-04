@@ -3,19 +3,12 @@ import axios from 'axios'
 import './App.css'
 import Button from './Button.js';
 import ActualSearch from './Search.js';
-import './App.css'
 import Firebase from'./firebase.js'
 import beer from './beer.svg';
 
 const apiUrl = `https://accesscontrolalloworiginall.herokuapp.com/https://sandbox-api.brewerydb.com/v2/beers/?key=2e6f996d79af39c55edc35ee6bf47d35`
 
 class Search extends Component {
-  state = {
-    // query: '',
-    results: []
-  }
-
-
 
   getInfo = () => {
     axios.get(`${apiUrl}${this.state.query}`)
@@ -26,15 +19,17 @@ class Search extends Component {
       })
   }
 
-    printBeer = () => {
-      fetch(apiUrl)
+    printBeer = (e) => {
+      console.log(this.state.searchItem);
+      e.preventDefault();
+      fetch(`${apiUrl}&name=${this.state.searchItem}`)
         .then((data) => {
           return data.json();
         })
-        .then((data) => {
-          console.log(data)
+        .then((beers) => {
+          console.log(beers)
             this.setState({
-              data: data.name,
+              beers:beers.data,
           })
         })
         .catch((err) => {
@@ -70,7 +65,10 @@ class Search extends Component {
       this.state = {
         currentItem: '',
         items: [],
-        results: []
+        results: [],
+        beers: [],
+        searchItem: '',
+        name: '',
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,7 +83,6 @@ class Search extends Component {
           newState.push({
             id: item,
             title: items[item].title,
-            user: items[item].user
           });
         }
         this.setState({
@@ -94,30 +91,61 @@ class Search extends Component {
       });
     }
 
+    addToList(a) {
+      a.preventDefault();
+      const searchBeer = document.getElementById('searchBeer');
+      console.log(searchBeer);
+      const addBox = document.getElementById("addBox").setAttribute("value", searchBeer);
+      console.log(addBox);
+    }
+
   render() {
     return (
       <div className="full-app">
         <div className="body-div">
         <section className="search">
+
           <img src={beer} className="App-logo" alt="logo" />
+
             <ActualSearch/>
-            <form onSubmit={this.handleSubmit}>
+
+            <form onSubmit={this.printBeer}>
               <input
               type="text"
-              name="currentItem"
+              name="searchItem"
               placeholder="Search"
               onChange={this.handleChange}
-              value={this.state.currentItem}>
+              value={this.state.searchItem}>
               </input>
               <Button
-              clickHandler={this.printBeer}
               buttonText='Search Brews'
               />
+            </form>
+
+            <form>
+              <div className='doc-results'>
+                <ul className='action-results'>
+                  <li>
+                      <h3
+                      name="currentItem"
+                      value={this.state.currentItem}
+                      id="searchBeer"
+                      >
+                      {JSON.stringify(this.state.beers.length>0 && this.state.beers[0].name)}
+                      </h3>
+                      <button
+                      className="remove-btn"
+                      onClick={this.addToList}
+                      >Add</button>
+                  </li>
+                </ul>
+              </div>
             </form>
 
             <form onSubmit={this.handleSubmit}>
               <input
               type="text"
+              id = "addBox"
               name="currentItem"
               placeholder="Add a custom beer"
               onChange={this.handleChange}
@@ -126,7 +154,9 @@ class Search extends Component {
               <button>Add</button>
             </form>
           </section>
-          <section className="lister">
+
+
+          <section>
               <ul>
                 {this.state.items.map((item) => {
                   return (

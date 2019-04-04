@@ -89,3 +89,9 @@ input {
 .lister {
   text-align: left;
 }
+.doc-results {
+  margin-bottom: 20px;
+}
+.action-results {
+  text-align: left;
+}
